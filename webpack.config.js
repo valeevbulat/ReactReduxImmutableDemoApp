@@ -1,11 +1,41 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
 const analyze = !!process.env.ANALYZE_ENV;
 const env = process.env.NODE_ENV || 'development';
 
+const jsSourcePath = path.join(__dirname, './source');
+const buildPath = path.join(__dirname, './public');
+const sourcePath = path.join(__dirname, './src');
+
 const isProduction = env === 'production';
+
+// Common plugins
+const plugins = [
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    filename: 'vendor.js',
+    minChunks(module) {
+      const context = module.context;
+      return context && context.indexOf('node_modules') >= 0;
+    },
+  }),
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify(env),
+    },
+  }),
+  new webpack.NamedModulesPlugin(),
+  new HtmlWebpackPlugin({
+    template: path.join(sourcePath, 'index.html'),
+    path: buildPath,
+    filename: 'index.html',
+  }),
+];
+
 
 const rules = [
   {
@@ -31,6 +61,38 @@ const rules = [
   },
 ];
 
+
+if (analyze) {
+  plugins.push(new BundleAnalyzerPlugin());
+}
+
+if (isProduction) {
+  plugins.push(
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      comments: false,
+      compress: {
+        sequences: true,
+        booleans: true,
+        loops: true,
+        unused: true,
+        warnings: false,
+        drop_console: true,
+        unsafe: true,
+      },
+    }),
+    new ExtractTextPlugin('style.css')
+  );
+} else {
+  plugins.push(
+    new webpack.HotModuleReplacementPlugin()
+  );
+}
+
 const webpackConfig = {
   name: 'client',
   target: 'web',
@@ -43,17 +105,11 @@ const webpackConfig = {
     rules,
   },
 
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(env),
-      },
-    }),
-  ],
+  plugins,
 
   output: {
     filename: '[name].js',
-    path: path.resolve('public/dist'),
+    path: path.resolve('public'),
     publicPath: '/',
   },
 
@@ -66,7 +122,7 @@ const webpackConfig = {
   },
 
   devServer: {
-    contentBase: './public',
+    contentBase: isProduction ? './build' : './src',
     historyApiFallback: true,
     port: isProduction ? 80 : 4000,
     compress: isProduction,
@@ -90,24 +146,5 @@ const webpackConfig = {
   },
 };
 
-if (analyze) {
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin());
-}
-
-if (isProduction) {
-  webpackConfig.plugins.push(
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false,
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        unused: true,
-        dead_code: true,
-        warnings: false,
-      },
-    })
-  );
-}
 
 module.exports = webpackConfig;

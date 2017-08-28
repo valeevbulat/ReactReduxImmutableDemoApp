@@ -1,5 +1,5 @@
 {
-  "name": "AnnaFinancialTest1",
+  "name": "AnnaFinancialTest",
   "version": "0.0.1",
   "description": "Anna financial test task #1",
   "main": "index.js",
@@ -32,6 +32,8 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "cross-env": "^5.0.0",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^2.30.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "semantic-ui-css": "^2.2.12",

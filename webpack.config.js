@@ -1,13 +1,14 @@
+const path = require('path');
+const webpack = require('webpack');
+
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
-const webpack = require('webpack');
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 const analyze = !!process.env.ANALYZE_ENV;
 const env = process.env.NODE_ENV || 'development';
 
-const jsSourcePath = path.join(__dirname, './source');
 const buildPath = path.join(__dirname, './public');
 const sourcePath = path.join(__dirname, './src');
 
@@ -54,9 +55,15 @@ const rules = [
     use: 'file-loader',
   },
   {
-    test: /\.(eot|otf|svg|ttf|woff)/,
+    test: /\.(eot|otf|svg|ttf|woff|woff2)$/,
     use: [{
       loader: 'file-loader',
+    }],
+  },
+  {
+    test: /\.(json)$/,
+    use: [{
+      loader: 'json-loader',
     }],
   },
 ];
@@ -89,7 +96,8 @@ if (isProduction) {
   );
 } else {
   plugins.push(
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new DashboardPlugin()
   );
 }
 
@@ -98,7 +106,7 @@ const webpackConfig = {
   target: 'web',
 
   entry: {
-    app: path.resolve('src/main.js'),
+    app: path.resolve('src/App.js'),
   },
 
   module: {
@@ -124,7 +132,7 @@ const webpackConfig = {
   devServer: {
     contentBase: isProduction ? './build' : './src',
     historyApiFallback: true,
-    port: isProduction ? 80 : 4000,
+    port: isProduction ? 80 : 3000,
     compress: isProduction,
     inline: !isProduction,
     hot: !isProduction,

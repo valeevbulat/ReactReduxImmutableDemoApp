@@ -81,6 +81,7 @@ class CommentItem extends Component {
             name='name'
             onChange={ this.onChangeField }
             value={ name }
+            required
           />
         </Form.Field>
         <Form.Field>
@@ -89,6 +90,7 @@ class CommentItem extends Component {
             name='text'
             onChange={ this.onChangeField }
             value={ text }
+            required
           />
         </Form.Field>
         <Button type='submit'>Submit</Button>

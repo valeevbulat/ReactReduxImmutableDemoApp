@@ -1,6 +1,8 @@
 import { Map } from 'immutable';
 import api from '../api';
 
+import { getComment } from './comments';
+
 export const ASYNC_ARTICLES_START = 'ASYNC_ARTICLES_START';
 export const ASYNC_ARTICLES_ERROR = 'ASYNC_ARTICLES_ERROR';
 export const ASYNC_ARTICLES_SUCCESS = 'ASYNC_ARTICLES_SUCCESS';
@@ -40,9 +42,10 @@ export function asyncArticles() {
   };
 }
 
-export const getArticles = ({ articles, users, comments }) =>
-  articles.get('allIds') && articles.get('allIds')
-    .map(id => {
+export const getArticles = ({ articles, users, comments }) => {
+  if (articles.get('allIds')) {
+    const articlesAllIds = articles.get('allIds');
+    return articlesAllIds && articlesAllIds.map(id => {
       const article = articles.get('byId').get(id);
       return Map({
         ...article.toJS(),
@@ -50,3 +53,18 @@ export const getArticles = ({ articles, users, comments }) =>
         comments: article.get('comments').map(comment => comments.get('byId').get(comment)),
       });
     });
+  }
+  return null;
+};
+
+export const getArticle = ({ articles, users, comments }, articleId) => {
+  if (articles.get('byId') && articleId) {
+    const article = articles.get('byId').get(articleId);
+    return Map({
+      ...article.toJS(),
+      author: users.get('byId').get(article.get('author')),
+      comments: article.get('comments').map(comment => getComment({ users, comments }, comment)),
+    });
+  }
+  return null;
+};

@@ -24,22 +24,36 @@ class CommentItem extends Component {
 
     this.state = {
       editable: false,
-      comment: null,
+      commentId: null,
+      userId: null,
+      text: null,
+      name: null,
     };
+  }
+
+  onChangeField = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    this.setState({
+      [name]: value,
+    });
   }
 
   openEdit = () => {
     const { comment } = this.props;
-    this.setState({ editable: true, comment });
+    this.setState({
+      editable: true,
+      commentId: comment.get('id'),
+      userId: comment.get('commenter').get('id'),
+      name: comment.get('commenter').get('name'),
+      text: comment.get('text'),
+    });
   }
 
   saveComment = () => {
-    const { comment } = this.state;
     const { handleSaveComment } = this.props;
-
-    this.setState({ editable: false, comment: null }, () => {
-      handleSaveComment(comment);
-    });
+    handleSaveComment(this.state);
+    this.setState({ editable: false });
   }
 
   rednerInfo() {
@@ -58,19 +72,23 @@ class CommentItem extends Component {
   }
 
   renderEdit() {
-    const { comment } = this.state;
+    const { name, text } = this.state;
     return (
       <Form onSubmit={ this.saveComment }>
         <Form.Field>
           <input
-            placeholder='Text'
-            value={ comment.get('text') }
+            placeholder='Author'
+            name='name'
+            onChange={ this.onChangeField }
+            value={ name }
           />
         </Form.Field>
         <Form.Field>
           <input
-            placeholder='Author'
-            value={ comment.get('commenter').get('name') }
+            placeholder='Text'
+            name='text'
+            onChange={ this.onChangeField }
+            value={ text }
           />
         </Form.Field>
         <Button type='submit'>Submit</Button>

@@ -4,6 +4,10 @@ import {
   ASYNC_ARTICLES_SUCCESS,
 } from '../actions/articles';
 
+import {
+  EDIT_USER,
+} from '../actions/users';
+
 const initialState = Map({
   byId: null,
   allIds: null,
@@ -21,6 +25,11 @@ const actionsMap = {
       byId,
       allIds: [...new Set(users.map(i => i.id))],
     });
+  },
+
+  [EDIT_USER]: (state, action) => {
+    const { name, userId } = action.user;
+    return state.update('byId', v => v.update(userId, x => x.merge({ name })));
   },
 };
 

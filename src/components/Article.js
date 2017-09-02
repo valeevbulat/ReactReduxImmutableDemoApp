@@ -19,7 +19,7 @@ const Article = ({ article, link, commentsCount }) => {
         <Item.Header { ...linkOpt }>
           {article.get('title')}
         </Item.Header>
-        <Item.Meta> <Link to={ `/user/${ article.get('id') }` } >{ article.get('author').get('name') }</Link></Item.Meta>
+        <Item.Meta> <Link to={ `/users/${ article.get('id') }` } >{ article.get('author').get('name') }</Link></Item.Meta>
         <Item.Description>{article.get('text')}</Item.Description>
         <Item.Extra { ...linkOpt }>
           {commentsCount && `${ article.get('comments').size } Comments`}

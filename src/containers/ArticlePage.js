@@ -8,14 +8,15 @@ import {
   Loader,
   Dimmer,
   Item,
-  Divider,
   Breadcrumb,
 } from 'semantic-ui-react';
 
 import {
   getArticle,
+} from '../actions/articles';
+import {
   saveComment,
-} from '../actions/article-item';
+} from '../actions/comments';
 
 import Comments from '../components/Comments';
 import Article from '../components/Article';
@@ -25,7 +26,6 @@ class ArticlePage extends Component {
     articleLoading: PropTypes.bool,
     article: PropTypes.any,
     articleError: PropTypes.string,
-    match: PropTypes.object,
     dispatch: PropTypes.func,
   };
 
@@ -33,18 +33,8 @@ class ArticlePage extends Component {
     articleLoading: false,
     article: null,
     articleError: '',
-    match: {
-      params: {
-        id: null,
-      },
-    },
     dispatch: () => false,
   };
-
-  componentDidMount() {
-    const { dispatch, match } = this.props;
-    dispatch(getArticle(match.params.id));
-  }
 
   handleSaveComment = (comment) => {
     const { dispatch } = this.props;
@@ -55,6 +45,7 @@ class ArticlePage extends Component {
     const { article, articleError } = this.props;
     if (articleError) return <Redirect to='/' />;
     if (!article) return false;
+
     return (
       <Item.Group>
         <Article article={ article } />
@@ -89,8 +80,7 @@ class ArticlePage extends Component {
   }
 }
 
-export default connect(state => ({
-  article: state.articleItem.get('asyncData'),
-  articleLoading: state.articleItem.get('asyncLoading'),
-  articleError: state.articleItem.get('asyncError'),
+export default connect((state, props) => ({
+  article: getArticle(state, props.match.params.id),
+  articleLoading: state.articles.get('asyncLoading'),
 }))(ArticlePage);

@@ -132,7 +132,7 @@ const webpackConfig = {
   devServer: {
     contentBase: isProduction ? './build' : './src',
     historyApiFallback: true,
-    port: isProduction ? 80 : 3000,
+    port: isProduction ? 8080 : 3000,
     compress: isProduction,
     inline: !isProduction,
     hot: !isProduction,

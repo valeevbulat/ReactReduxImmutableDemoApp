@@ -22,17 +22,11 @@ class User extends Component {
   static propTypes = {
     articlesLoading: PropTypes.bool,
     comments: PropTypes.any,
-    match: PropTypes.object,
   };
 
   static defaultProps = {
     articlesLoading: false,
     comments: null,
-    match: {
-      params: {
-        id: null,
-      },
-    },
     dispatch: () => false,
   };
 
@@ -64,7 +58,7 @@ class User extends Component {
         <Breadcrumb>
           <Breadcrumb.Section to='/' as={ Link }>Articles</Breadcrumb.Section>
           <Breadcrumb.Divider />
-          <Breadcrumb.Section active>User articles</Breadcrumb.Section>
+          <Breadcrumb.Section active>User comments</Breadcrumb.Section>
         </Breadcrumb>
         { this.renderArticles() }
       </Container>

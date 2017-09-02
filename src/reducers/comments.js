@@ -4,6 +4,10 @@ import {
   ASYNC_ARTICLES_SUCCESS,
 } from '../actions/articles';
 
+import {
+  EDIT_COMMENT,
+} from '../actions/comments';
+
 const initialState = Map({
   byId: null,
   allIds: null,
@@ -24,6 +28,11 @@ const actionsMap = {
       byId,
       allIds: [...new Set(comments.map(i => i.id))],
     });
+  },
+
+  [EDIT_COMMENT]: (state, action) => {
+    const { text, commentId } = action.comment;
+    return state.update('byId', v => v.update(commentId, x => x.merge({ text })));
   },
 };
 

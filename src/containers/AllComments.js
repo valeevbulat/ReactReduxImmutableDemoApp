@@ -14,6 +14,7 @@ import {
 
 import {
   getComments,
+  saveComment,
 } from '../actions/comments';
 
 import Comments from '../components/Comments';
@@ -22,23 +23,22 @@ class AllComments extends Component {
   static propTypes = {
     articlesLoading: PropTypes.bool,
     comments: PropTypes.any,
-    match: PropTypes.object,
     dispatch: PropTypes.func,
   };
 
   static defaultProps = {
     articlesLoading: false,
     comments: null,
-    match: {
-      params: {
-        id: null,
-      },
-    },
     dispatch: () => false,
   };
 
+  handleSaveComment = (comment) => {
+    const { dispatch } = this.props;
+    dispatch(saveComment(comment));
+  }
+
   renderArticles = () => {
-    const { comments, match } = this.props;
+    const { comments } = this.props;
     if (!comments) return false;
     return (
       <Item.Group>
@@ -46,6 +46,7 @@ class AllComments extends Component {
         <Divider />
         { !comments ? 'No comments'
           : <Comments
+            handleSaveComment={ this.handleSaveComment }
             comments={ comments }
           />
         }

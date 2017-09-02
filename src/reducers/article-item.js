@@ -1,45 +1,35 @@
 import { Map } from 'immutable';
 
 import {
-  ASYNC_ARTICLES_START,
-  ASYNC_ARTICLES_ERROR,
-  ASYNC_ARTICLES_SUCCESS,
-} from '../actions/articles';
+  ASYNC_ARTICLE_ITEM_START,
+  ASYNC_ARTICLE_ITEM_ERROR,
+  ASYNC_ARTICLE_ITEM_SUCCESS,
+} from '../actions/article-item';
 
 const initialState = Map({
-  byId: null,
-  allIds: null,
+  asyncData: null,
   asyncError: null,
   asyncLoading: false,
 });
 
 const actionsMap = {
   // Async action
-  [ASYNC_ARTICLES_START]: state => {
+  [ASYNC_ARTICLE_ITEM_START]: state => {
     return state.merge({
       asyncLoading: true,
       asyncError: null,
     });
   },
-  [ASYNC_ARTICLES_ERROR]: (state, action) => {
+  [ASYNC_ARTICLE_ITEM_ERROR]: (state, action) => {
     return state.merge({
       asyncLoading: false,
       asyncError: action.data,
     });
   },
-  [ASYNC_ARTICLES_SUCCESS]: (state, action) => {
-    const byId = action.data.reduce((obj, item) => {
-      obj[item.id] = {
-        ...item,
-        author: item.author.id,
-        comments: item.comments.map(comment => comment.id),
-      };
-      return obj;
-    }, {});
+  [ASYNC_ARTICLE_ITEM_SUCCESS]: (state, action) => {
     return state.merge({
       asyncLoading: false,
-      byId,
-      allIds: action.data.map(i => i.id),
+      asyncData: action.data,
     });
   },
 };

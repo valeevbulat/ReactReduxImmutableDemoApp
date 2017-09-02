@@ -36,6 +36,7 @@
     "html-webpack-plugin": "^2.30.1",
     "immutable": "^3.8.1",
     "json-loader": "^0.5.7",
+    "normalizr": "^3.2.3",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

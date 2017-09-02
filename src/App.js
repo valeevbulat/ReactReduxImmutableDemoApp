@@ -14,6 +14,7 @@ import 'semantic-ui-css/semantic.min.css';
 // Reducers and routes
 import reducers from './reducers';
 import Routes from './routes';
+import RootContainer from './containers/RootContainer';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -35,7 +36,9 @@ if (isProduction) {
 
 const App = () => (
   <Provider store={ store }>
-    <Routes />
+    <RootContainer>
+      <Routes />
+    </RootContainer>
   </Provider>
 );
 

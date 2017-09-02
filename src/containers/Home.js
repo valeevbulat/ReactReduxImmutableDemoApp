@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
-  List,
   Container,
   Header,
   Loader,
-  Segment,
   Dimmer,
-  Image,
+  Divider,
+  Item,
+  Button,
 } from 'semantic-ui-react';
 
 import {
   getArticles,
-} from '../../actions/articles';
+} from '../actions/articles';
+
+import Article from '../components/Article';
 
 class Home extends Component {
   static propTypes = {
@@ -28,30 +31,23 @@ class Home extends Component {
     dispatch: () => false,
   };
 
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(getArticles());
-  }
-
-  renderNews = () => {
+  renderArticles = () => {
     const { articles } = this.props;
     if (!articles) return false;
+
     return (
-      <List>
-        <List.Header>
-          <Header as='h1'>Список статей</Header>
-        </List.Header>
-        { articles.map(item => (
-          <List.Item key={ item.get('') }>
-            <List.Content>
-              <Segment>
-                <Header as='h3'>{item.get('title')}</Header>
-                {item.get('text')}
-              </Segment>
-            </List.Content>
-          </List.Item>
+      <Item.Group>
+        <Header as='h2'>Articles</Header>
+        <Divider />
+        { articles.map(article => (
+          <Article
+            key={ article.get('id') }
+            article={ article }
+            link
+            commentsCount
+          />
         ))}
-      </List>
+      </Item.Group>
     );
   }
 
@@ -65,14 +61,16 @@ class Home extends Component {
         >
           <Loader inverted content='Loading' />
         </Dimmer>
-        { this.renderNews() }
+        <Header as='h1'>Frontend Developer Anna Financial Test</Header>
+        <Button secondary to='/comments' as={ Link }>All comments</Button>
+        { this.renderArticles() }
       </Container>
     );
   }
 }
 
 export default connect(state => ({
-  articles: state.articles.get('asyncData'),
+  articles: getArticles(state),
   articlesLoading: state.articles.get('asyncLoading'),
   articlesError: state.articles.get('asyncError'),
 }))(Home);

@@ -24,7 +24,6 @@ const actionsMap = {
       return obj;
     }, {});
     return state.merge({
-      asyncLoading: false,
       byId,
       allIds: [...new Set(comments.map(i => i.id))],
     });

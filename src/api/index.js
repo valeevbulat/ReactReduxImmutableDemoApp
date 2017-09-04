@@ -1,8 +1,14 @@
-import faker from './faker';
+import fetch from 'isomorphic-fetch';
+
+
+const responseJson = res => res.json();
+const responseData = json => json.body;
+const instance = (url) => fetch(`http://example-anna.com${ url }`)
+  .then(responseJson)
+  .then(responseData);
 
 export default {
-  getArticles: () => faker('/api/articles/'),
-  getArticle: (id) => faker(`/api/articles/${ id }/`),
-  putComment: (id) => faker(`/api/comment/${ id }/`),
-  putUser: (id) => faker(`/api/user/${ id }/`),
+  getArticles: () => instance('/articles/'),
+  putComment: (id) => instance(`/comment/${ id }/`),
+  putUser: (id) => instance(`/user/${ id }/`),
 };

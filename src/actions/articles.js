@@ -8,20 +8,20 @@ export const ASYNC_ARTICLES_ERROR = 'ASYNC_ARTICLES_ERROR';
 export const ASYNC_ARTICLES_SUCCESS = 'ASYNC_ARTICLES_SUCCESS';
 
 // Async action example
-function asyncStart() {
+export function asyncStart() {
   return {
     type: ASYNC_ARTICLES_START,
   };
 }
 
-function asyncSuccess(data) {
+export function asyncSuccess(data) {
   return {
     type: ASYNC_ARTICLES_SUCCESS,
     data,
   };
 }
 
-function asyncError(error) {
+export function asyncError(error) {
   return {
     type: ASYNC_ARTICLES_ERROR,
     data: error,

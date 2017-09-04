@@ -10,4 +10,7 @@ Open on http://localhost:3000
 ### Build
 ``` yarn build ```
 
+### Testing
+``` yarn test ```
+
 Build in dist directory

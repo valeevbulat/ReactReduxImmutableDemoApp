@@ -21,7 +21,6 @@ const actionsMap = {
       return obj;
     }, {});
     return state.merge({
-      asyncLoading: false,
       byId,
       allIds: [...new Set(users.map(i => i.id))],
     });

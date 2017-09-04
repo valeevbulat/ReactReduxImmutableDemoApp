@@ -60,11 +60,11 @@ describe('comments reducer', () => {
     ).toEqual(Map({
       byId: Map({
         1: Map({
-          id: "1",
+          id: '1',
           name: 'Polly Jane',
         }),
       }),
-      allIds: List(["1"]),
+      allIds: List(['1']),
     }));
 
     expect(
@@ -72,11 +72,11 @@ describe('comments reducer', () => {
         Map({
           byId: Map({
             1: Map({
-              id: "1",
+              id: '1',
               name: 'Polly Jane',
             }),
           }),
-          allIds: List(["1"]),
+          allIds: List(['1']),
         }),
         {
           type: ASYNC_ARTICLES_SUCCESS,
@@ -86,11 +86,11 @@ describe('comments reducer', () => {
     ).toEqual(Map({
       byId: Map({
         2: Map({
-          id: "2",
+          id: '2',
           name: 'John Galt',
         }),
       }),
-      allIds: List(["2"]),
+      allIds: List(['2']),
     })
     );
   });

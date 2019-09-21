@@ -1,4 +1,6 @@
-# Frontend Developer Anna Financial Test
+# React.js with Redux.js SPA.
+Demo project with faker api.
+
 ### Install dependencies
 ```yarn install```
 
